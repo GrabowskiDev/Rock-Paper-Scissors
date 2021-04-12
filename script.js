@@ -87,6 +87,8 @@ function game() {
         console.log("Computer have "+computerPoints+" points!")
         console.log(" ")
     }
+
+    //Announcing the winner
     if (playerPoints>computerPoints) return "Player won the game!";
     else if (playerPoints<computerPoints) return "Computer won the game!";
     else return "You tied the game!";
