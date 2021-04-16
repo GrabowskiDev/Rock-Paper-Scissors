@@ -27,17 +27,3 @@
     height: 50px;
     margin: 0px 10px 0px 10px;
 }
-
-.info_button {
-    background-color: white;
-    border: white none 0px;    
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    justify-content: center;
-
-    position: fixed;
-    top: 0px;
-    right: 0px;
-}
