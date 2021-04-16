@@ -1,6 +1,6 @@
 //declaring global variables
-let playerPoints;
-let computerPoints;
+let playerPoints = 0;
+let computerPoints = 0;
 
 //script for random number in range
 function getRandomInt(min, max) {
@@ -20,76 +20,66 @@ function computerChoice(){
 }
 
 //round needs player choice and computer choice to see who wins,
-function round(){
-    //player chooses rock, paper or scissors
-    let player = prompt("Choose rock, paper or scissors").toLowerCase();
+function round(player){
     let computer = computerChoice();
 
-    //if player is rock
-    if (player=="rock") {
+    //If player and computer picked the same, then tie
+    if (player==computer) return `Tie! Both of you choosed ${player}!`
 
-       if (computer=="rock") return "Tie";
+    if (player=="rock"&&computer=="paper") return computerWon(player, computer);
+    else if (player=="rock") return playerWon(player, computer);
 
-       if (computer=="paper") {
-            computerPoints++;
-            return "Computer won this round!";
-        }
+    if (player=="paper"&&computer=="scissors") return computerWon(player, computer);
+    else if (player=="paper") return playerWon(player, computer);
 
-        if (computer=="scissors") {
-            playerPoints++;
-            return "You won this round";
-        }
-    }
-
-    //if player is paper
-    if (player=="paper") {
-
-        if (computer=="rock") {
-            playerPoints++;
-            return "You won this round";
-        }
-
-        if (computer=="paper") return "Tie";
-
-        if (computer=="scissors") {
-            computerPoints++;
-            return "Computer won this round";
-        }
-    }
-
-    //if player is scissors
-    if (player=="scissors") {
-
-        if (computer=="rock") {
-            computerPoints++;
-            return "Computer won this round";
-        }
-
-        if (computer=="paper") {
-            playerPoints++;
-            return "You win this round";
-        }
-
-        if (computer=="scissors") return "Tie";
-    }
+    if (player=="scissors"&&computer=="rock") return computerWon(player, computer);
+    else if (player=="scissors") return playerWon(player, computer);
 }
 
-//game is 5 rounds long, each round returns who won and points
-//after 5 rounds return points and pick winner
-function game() {
-    //initVal to 0 points
-    playerPoints=0;
-    computerPoints=0;
+//computer winning the round
+function computerWon (player, computer) {
+    computerPoints++;
+    return `Computer won by choosing ${computer} over your ${player}`;
+}
 
-    for (i=0; i<5; i++){
-        console.log(round());
-        console.log("Player have "+playerPoints+" points!")
-        console.log("Computer have "+computerPoints+" points!")
-        console.log(" ")
-    }
+//player winning the round
+function playerWon (player, computer) {
+    playerPoints++;
+    return `You won by choosing ${player} over computer's ${computer}`;
+}
 
-    //Announcing the winner
-    if (playerPoints>computerPoints) return "Player won the game!";
-    else if (playerPoints<computerPoints) return "Computer won the game!";
-    else return "You tied the game!";
+//Query selectors
+const buttons = document.querySelectorAll('button');
+
+const roundWinner = document.querySelector('#round_winner');
+const gameWinner = document.querySelector('#game_winner');
+
+const playerPointsRef = document.querySelector('#player');
+const computerPointsRef = document.querySelector('#computer');
+
+//Rock paper and scissors buttons starting round
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        roundWinner.textContent = round(button.id);
+        playerPointsRef.textContent = `Player: ${playerPoints} Points!`;
+        computerPointsRef.textContent = `Computer: ${computerPoints} Points!`;
+        areWeStillPlaying();
+    });
+});
+
+//If someone gets 5 points, announce the winner
+function areWeStillPlaying () {
+    if (playerPoints == 5) {
+        gameWinner.textContent = `You won the game by ${playerPoints-computerPoints} points!`;        
+        turnOffButtons();
+    } else if (computerPoints == 5) {
+        gameWinner.textContent = `Computer won the game by ${computerPoints-playerPoints} points!`;
+        turnOffButtons();
+    };
+}
+
+function turnOffButtons () {
+    buttons.forEach((button) => {
+        button.disabled = true;
+    });
 }
