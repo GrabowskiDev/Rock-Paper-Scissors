@@ -1,6 +1,9 @@
 //declaring global variables
 let playerPoints = 0;
 let computerPoints = 0;
+let playerGamesWon = 0;
+let computerGamesWon = 0;
+
 
 //script for random number in range
 function getRandomInt(min, max) {
@@ -57,9 +60,13 @@ const gameWinner = document.querySelector('#game_winner');
 const playerPointsRef = document.querySelector('#player');
 const computerPointsRef = document.querySelector('#computer');
 
+const playerGamesRef = document.querySelector('#playerGames');
+const computerGamesRef = document.querySelector('#computerGames');
+
 //Rock paper and scissors buttons starting round
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
+        gameWinner.textContent = "";
         roundWinner.textContent = round(button.id);
         playerPointsRef.textContent = `Player: ${playerPoints} Points!`;
         computerPointsRef.textContent = `Computer: ${computerPoints} Points!`;
@@ -71,15 +78,25 @@ buttons.forEach((button) => {
 function areWeStillPlaying () {
     if (playerPoints == 5) {
         gameWinner.textContent = `You won the game by ${playerPoints-computerPoints} points!`;        
-        turnOffButtons();
+        playerGamesWon++;
+        playerGamesRef.textContent = `${playerGamesWon} Games Won`;
+        resetPoints();
     } else if (computerPoints == 5) {
         gameWinner.textContent = `Computer won the game by ${computerPoints-playerPoints} points!`;
-        turnOffButtons();
+        computerGamesWon++;
+        computerGamesRef.textContent = `${computerGamesWon} Games Won`;
+        resetPoints();
     };
 }
 
+//Turning off buttons
 function turnOffButtons () {
     buttons.forEach((button) => {
         button.disabled = true;
     });
+}
+
+function resetPoints () {
+    playerPoints = 0;
+    computerPoints = 0;
 }
